@@ -1,3 +1,4 @@
 source "https://rubygems.org"
-gem "jekyll", "~> 4.3.0"
+
+# Cho phép build site giống hệt GitHub Pages
 gem "github-pages", group: :jekyll_plugins

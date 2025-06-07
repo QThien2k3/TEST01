@@ -1,6 +1,5 @@
 name: Deploy Jekyll to GitHub Pages
 
-# Khi có push vào branch main thì workflow chạy
 on:
   push:
     branches:
@@ -11,27 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code (đưa code từ main lên runner)
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           submodules: true
 
-      # 2. Thiết lập Ruby để chạy Jekyll
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1  # chọn version tương thích với Jekyll
+          ruby-version: 3.1.2
 
-      # 3. Cài gem (như jekyll, bundler, github-pages nếu dùng)
       - name: Install dependencies
         run: bundle install
 
-      # 4. Build Jekyll, kết quả ra folder _site
       - name: Build the site with Jekyll
         run: bundle exec jekyll build --destination _site
 
-      # 5. Đẩy nội dung folder _site lên branch gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

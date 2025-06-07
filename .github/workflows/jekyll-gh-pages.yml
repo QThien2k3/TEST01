@@ -1,5 +1,10 @@
 name: Deploy Jekyll to GitHub Pages
 
+# Cấp quyền cho GITHUB_TOKEN được push code và cập nhật Pages
+permissions:
+  contents: write
+  pages: write
+
 on:
   push:
     branches:
@@ -8,12 +13,19 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Đảm bảo job này cũng có quyền write
+    permissions:
+      contents: write
+      pages: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          # Dùng token mặc định để checkout và push sau này
+          token: ${{ secrets.GITHUB_TOKEN }}
           submodules: true
+          persist-credentials: true
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -29,6 +41,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
+          # Token này đã có quyền write contents/pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./_site
